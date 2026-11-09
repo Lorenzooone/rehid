@@ -45,6 +45,9 @@ static inline uint32_t RemapKey(int16_t keys) {
     if (keys & 0x400)
         nkeys |= KEY_START;
 
+    if (keys & 0x800)
+        nkeys |= KEY_DEBUG_PAD_HOME;
+
     if (keys & 0x1000)
         nkeys |= KEY_SELECT;
 

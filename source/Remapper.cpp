@@ -1,5 +1,6 @@
 #include <strings.h>
 #include "Remapper.hpp"
+#include "DebugPad.hpp"
 #include "json.h"
 
 static Result PMDBG_GetCurrentAppInfo(FS_ProgramInfo *outProgramInfo, u32 *outPid, u32 *outLaunchFlags) {
@@ -213,6 +214,15 @@ uint32_t Remapper::Remap(uint32_t hidstate, CirclePadEntry *cpadentry, CirclePad
             m_release = 1;
         }
 
+    }
+
+    if (m_release_home_debugpad == 1) {
+        srvPublishToSubscriber(0x205, 0);
+        m_release_home_debugpad = 0;
+    } else if (hidstate & KEY_DEBUG_PAD_HOME) {
+        newstate &= ~KEY_DEBUG_PAD_HOME;
+        srvPublishToSubscriber(0x204, 0);
+        m_release_home_debugpad = 1;
     }
 
     newstate = CirclePadRemap(hidstate, newstate, cpadentry);

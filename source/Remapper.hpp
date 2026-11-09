@@ -95,6 +95,7 @@ public:
     uint32_t m_homebuttonkeys = 0;
 
     uint8_t m_release = 0;
+    uint8_t m_release_home_debugpad = 0;
     uint8_t m_overridecpadpro = 0;
 
 private:

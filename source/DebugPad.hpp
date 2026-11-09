@@ -1,6 +1,8 @@
 #include <3ds.h>
 #include "rings/DebugPadRing.hpp"
 
+#define KEY_DEBUG_PAD_HOME BIT(18)
+
 class DebugPad {
 public:
     void Initialize();
