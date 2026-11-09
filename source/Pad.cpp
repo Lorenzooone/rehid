@@ -22,6 +22,7 @@ void Pad::SetTimer() {
 
 extern u32 debugpadkeys;
 extern CirclePadEntry debugpadstick;
+extern CirclePadEntry debugpadstickright;
 void Pad::ReadFromIO(PadEntry *entry, uint32_t *raw, CirclePadEntry *circlepad, Remapper *remapper) {
     volatile uint32_t latest = (vu32)(IOHIDPAD) ^ 0xFFF;
 
@@ -30,18 +31,22 @@ void Pad::ReadFromIO(PadEntry *entry, uint32_t *raw, CirclePadEntry *circlepad, 
     *raw = latest;
     latest = latest & ~(2 * (latest & 0x40) | ((latest & 0x20u) >> 1));
 
+    m_ir->ScanInput(remapper);
+    CPPEntry cppentry = m_ir->GetInputs();
+
 #ifdef ENABLE_DEBUGPAD_REMAPPING
 
     if (val & 0x1) {
         latest |= debugpadkeys;
         circlepad->x = debugpadstick.x;
         circlepad->y = debugpadstick.y;
+
+        cppentry.circlepadstate.x = debugpadstickright.x;
+        cppentry.circlepadstate.y = debugpadstickright.y;
     }
 
 #endif
 
-    m_ir->ScanInput(remapper);
-    CPPEntry cppentry = m_ir->GetInputs();
     uint32_t additionalcpad = CirclePad::ConvertToHidButtons<CirclePadMode::CPAD>(circlepad, latest); // if need be this also sets the circlepad entry to 0
 
     latest = latest | cppentry.currpadstate | remapper->m_remaptouchkeys | additionalcpad;

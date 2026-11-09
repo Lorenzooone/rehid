@@ -165,6 +165,7 @@ void DebugPad::Initialize() {
 
 u32 debugpadkeys = 0;
 CirclePadEntry debugpadstick;
+CirclePadEntry debugpadstickright;
 void DebugPad::Sampling() {
     if (!m_isinitialized)
         return;
@@ -179,6 +180,8 @@ void DebugPad::Sampling() {
     debugpadkeys = RemapKey(entry.currpadstate);
     debugpadstick.x = map(entry.leftstickx, -32, 31, -180, 180);
     debugpadstick.y = map(entry.leftsticky, -32, 31, -180, 180);
+    debugpadstickright.x = map(entry.rightstickx, -32, 31, -180, 180);
+    debugpadstickright.y = map(entry.rightsticky, -32, 31, -180, 180);
 
     if (m_writetoring) {
         m_ring->WriteToRing(&m_oldentry);
