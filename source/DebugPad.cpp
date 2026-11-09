@@ -182,6 +182,7 @@ void DebugPad::Sampling() {
     debugpadstick.y = map(entry.leftsticky, -32, 31, -180, 180);
     debugpadstickright.x = map(entry.rightstickx, -32, 31, -180, 180);
     debugpadstickright.y = map(entry.rightsticky, -32, 31, -180, 180);
+    debugpadkeys = CirclePad::ConvertToHidButtons<CirclePadMode::CSTICK>(&debugpadstickright, debugpadkeys);
 
     if (m_writetoring) {
         m_ring->WriteToRing(&m_oldentry);
